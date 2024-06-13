@@ -1,6 +1,6 @@
 close all
 
-clear astSampleCase ptn_info class_model
+clear astSampleCase ptn_info class_model solution_x
 flag_load_data = input('[1: pen-digits classify, 2: a simple 2-d classify demo] ');
 %
 %
@@ -15,7 +15,7 @@ if flag_load_data ~= 0
 end
 
 dim_feature = length(astSampleCase(1).feature);
-N = ptn_info.N
+N = ptn_info.N;
 
 %%%%%%%%%%%%%%%% PCA: Principal Component Analysis
 if bitand(ptn_info.model_option, 16) ~= 0
