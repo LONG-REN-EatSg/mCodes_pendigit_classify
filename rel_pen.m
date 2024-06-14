@@ -21,7 +21,7 @@ else
 end
 
 ptn_info.dim_feature = dim_feature;
-N = ptn_info.N
+N = ptn_info.N;
 
 %%%%%%%%%%%%%%%% PCA: Principal Component Analysis
 if bitand(ptn_info.model_option, 16) ~= 0
