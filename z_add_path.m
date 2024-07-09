@@ -1,7 +1,7 @@
 chdir d:
 
 %% install sedumi
-strPath_sedumi_2024 = 'D:\github\sedumi-master\'
+strPath_sedumi_2024 = 'D:\github\sedumi-master\';
 addpath(strPath_sedumi_2024);
 install_sedumi;
 
