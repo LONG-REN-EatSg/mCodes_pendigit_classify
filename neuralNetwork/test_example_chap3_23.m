@@ -13,9 +13,9 @@ classes = vec2ind(y);
 [ptn_info, astSampleCase, stNeuralNetwork] = ptn_load_data_and_cfg(1);
 net = lvqnet(ptn_info.nNeuralLayer, ptn_info.fNeuralLearnRate);
 N = ptn_info.N;
-[net, TR] = train(net, stNeuralNetwork.matPoints(:, 1:N), stNeuralNetwork.matTargetClass(:, 1:N));
+net.trainFcn = 'trainlm';
+[net, TR] = train(net, stNeuralNetwork.matPoints(:, 1:N), stNeuralNetwork.matTargetClass(:, 1:N), 'CheckpointFile','MyCheckpoint','CheckpointDelay',120);
 view(net)
-y = net(x);
 
 
 %% 设计一LVQ神经网络，对其进行训练，以便用来将10个输入矢量分为两类，即

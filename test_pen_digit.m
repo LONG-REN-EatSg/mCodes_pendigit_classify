@@ -1,6 +1,6 @@
 close all
 
-clear astSampleCase ptn_info class_model solution_x
+clear astSampleCase ptn_info class_model solution_x stNeuralNetwork
 flag_load_data = input('[1: pen-digits classify, 2: a simple 2-d classify demo] ');
 %
 %
@@ -11,7 +11,7 @@ flag_load_data = input('[1: pen-digits classify, 2: a simple 2-d classify demo] 
 % struct: {'x', 'y', 'class', 'feature'}
 
 if flag_load_data ~= 0
-    [ptn_info, astSampleCase] = ptn_load_data_and_cfg(flag_load_data)
+    [ptn_info, astSampleCase, stNeuralNetwork] = ptn_load_data_and_cfg(flag_load_data)
 end
 
 dim_feature = length(astSampleCase(1).feature);
@@ -120,6 +120,16 @@ elseif ptn_info.model_option == 10              %%%%%%%% Quadratic Model, Solved
 %        size(solver_info.x)
 %        solution_x(:, ii+1) =  solver_info.x;
     end
+elseif ptn_info.model_option == 11              %%%%%%%% Neural network
+    tstart = tic;
+    net = feedforwardnet(ptn_info.nNeuralLayer, 'trainlm');
+    N = ptn_info.N;
+    matTrainPoints = stNeuralNetwork.matPoints(:, 1:N);
+    matTargetClass = stNeuralNetwork.matTargetClass(:, 1:N);
+%    net = lvqnet(ptn_info.nNeuralLayer, ptn_info.fNeuralLearnRate); net.trainFcn = 'trainlm';
+    [netSolution, TR] = train(net, matTrainPoints, matTargetClass, 'CheckpointFile','MyCheckpoint','CheckpointDelay',120);
+    cpu_time_learning = toc(tstart);
+    view(net);    
 else
     error('Error Model Option');
 end
@@ -166,6 +176,7 @@ elseif ptn_info.model_option == 22
 elseif ptn_info.model_option == 7
 elseif ptn_info.model_option == 8
 elseif ptn_info.model_option == 24
+elseif ptn_info.model_option == 11
 else
     error('Error Model Option');
 end
@@ -222,6 +233,11 @@ elseif ptn_info.model_option == 24
     [pattern_identify, remain_error] = ptn_verify_gaussian_pdf(astSampleCase_pca, ptn_info, class_model);
     identify_time = cputime - t1
     
+elseif ptn_info.model_option == 11
+    t1 = cputime;
+    [pattern_identify, remain_error] = ptn_verify_model_neural_network(netSolution, astSampleCase, ptn_info, stNeuralNetwork);
+    identify_time = cputime - t1
+
 else
     
 end
@@ -251,8 +267,9 @@ else
 end
 
 iFigId = 30;
-ptn_plot_likelihood(astSampleCase, class_model, model_linear, ptn_info, iFigId);
-
+if ptn_info.model_option ~= 11
+    ptn_plot_likelihood(astSampleCase, class_model, model_linear, ptn_info, iFigId);
+end
 if flag_load_data == 2
     x = linspace(-1, 1, 100);
     y = linspace(-1, 1, 100);

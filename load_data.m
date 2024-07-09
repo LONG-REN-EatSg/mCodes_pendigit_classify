@@ -8,14 +8,20 @@ load pendigits.tra
 
 stNeuralNetwork = [];
 num_total_cases = size(pendigits, 1);
-
+nMaxClass = 0;
 for ii= 1:1:num_total_cases
     pen_digit_case(ii).x = pendigits(ii, 1:2:16);
     pen_digit_case(ii).y = pendigits(ii, 2:2:16);
     pen_digit_case(ii).class = pendigits(ii, 17);
     pen_digit_case(ii).feature = pendigits(ii, 1:1:16);
-    
+    if nMaxClass < pen_digit_case(ii).class
+        nMaxClass = pen_digit_case(ii).class;
+    end
+end
+
+for ii= 1:1:num_total_cases
     stNeuralNetwork.matPoints(:,ii) = pendigits(ii, 1:1:16);  % format for neural network
+    stNeuralNetwork.matTargetClass(:, ii) = -1 * ones(nMaxClass + 1,1);  % totally 10 classes
     stNeuralNetwork.matTargetClass(pendigits(ii, 17)+1, ii) = 1;  %% class-0 is 1st-row, class-1 is 2nd-row, ...
 end
 
