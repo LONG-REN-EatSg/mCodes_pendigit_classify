@@ -272,12 +272,14 @@ if ptn_info.model_option == 0 | ptn_info.model_option == 1 | ptn_info.model_opti
 end
 %%% by mean and variance
 if bitand(ptn_info.model_option, 16) ~= 0
-    ptn_plot_master(astSampleCase_pca, pattern_identify, ptn_info);
+    stIdentifyPassFail = ptn_plot_master(astSampleCase_pca, pattern_identify, ptn_info);
     ptn_plot_master_2(astSampleCase_pca, pattern_identify, ptn_info);
 else
-    ptn_plot_master(astSampleCase, pattern_identify, ptn_info);
+    stIdentifyPassFail = ptn_plot_master(astSampleCase, pattern_identify, ptn_info);
     ptn_plot_master_2(astSampleCase, pattern_identify, ptn_info);
 end
+
+stOutPenDigitIdentifyCalc.stIdentifyPassFail = stIdentifyPassFail;
 
 iFlag_plot_likelihood = 0;
 if iFlag_plot_likelihood >= 1 && ptn_info.model_option ~= 22 && ptn_info.model_option ~= 6 && ptn_info.model_option ~= 11 %% no likelihood for K-NN

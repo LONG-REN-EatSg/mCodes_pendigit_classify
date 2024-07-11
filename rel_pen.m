@@ -33,3 +33,4 @@ stOutPenIdentify.cpu_time_learning = stOutPenDigitIdentifyCalc.cpu_time_learning
 stOutPenIdentify.identify_time = stOutPenDigitIdentifyCalc.identify_time;
 stOutPenIdentify.pattern_identify = stOutPenDigitIdentifyCalc.pattern_identify;
 stOutPenIdentify.remain_error = stOutPenDigitIdentifyCalc.remain_error;
+stOutPenIdentify.stIdentifyPassFail = stOutPenDigitIdentifyCalc.stIdentifyPassFail;

@@ -1,4 +1,4 @@
-function ptn_plot_master(pen_digit_case, pattern_identify, ptn_info)
+function [stIdentifyPassFail] = ptn_plot_master(pen_digit_case, pattern_identify, ptn_info)
 %  pen_digit_case:   an array of struct including the trianing data and expected class
 %     x: x coordinate
 %     y: y coordinate
@@ -32,3 +32,6 @@ title('Pass and Fail Statistis, Pendigit Identify');
 
 identify_pass = identify_pass_learning + identify_pass_verify
 identify_fail = identify_fail_learning + identify_fail_verify
+
+stIdentifyPassFail.identify_fail = identify_fail;
+stIdentifyPassFail.identify_pass  = identify_pass;
