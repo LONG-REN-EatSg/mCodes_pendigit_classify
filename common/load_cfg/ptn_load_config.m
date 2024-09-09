@@ -1,4 +1,5 @@
 function [ptn_info] = ptn_load_config(strFileFullName)
+%% 2024July9 Add neural network
 
 strConstFeatureScaleFactor      = 'FEATURE_SCALE_FACTOR';
 strConstClassScaleFactor        = 'CLASS_SCALE_FACTOR';
@@ -10,6 +11,9 @@ strConstSolverSedumiBigEps      = 'SOLVER_SEDUMI_BIG_EPS';
 strConstQuad2ModelPenalty       = 'MODEL_QUAD2_PENALTY';
 strConstTotalClass              = 'TOTAL_CLASS';
 strConstKesslerRo               = 'KESSLER_STEP_SIZE';
+strConstNeuralLayer             = 'NEURAL_LAYER';  %% default = 20;
+strConstNeuralMaxIteration      = 'MAX_ITER';      %% default = 1000;
+strConstNeuralLearnRate         = 'NEURAL_LEARN_RATE';  %% default = 0.01;
 
 lenConstFeatureScaleFactor = length(strConstFeatureScaleFactor);
 lenConstClassScaleFactor = length(strConstClassScaleFactor);
@@ -21,12 +25,20 @@ lenConstSolverSedumiBigEps = length(strConstSolverSedumiBigEps);
 lenConstQuad2ModelPenalty = length(strConstQuad2ModelPenalty);
 lenConstTotalClass = length(strConstTotalClass);
 lenConstKesslerRo = length(strConstKesslerRo);
+lenConstNeuralLayer = length(strConstNeuralLayer);             %= 'NEURAL_LAYER';  %% default = 20;
+lenConstNeuralMaxIteration = length(strConstNeuralMaxIteration);                 %= 'MAX_ITER';      %% default = 1000;
+lenConstNeuralLearnRate = length(strConstNeuralLearnRate);         % = 'NEURAL_LEARN_RATE';  %% default = 0.01;
 
 %% default parameters
 ptn_info.penalty = 20;
 ptn_info.scale_feature_factor = 100;
 ptn_info.scale_factor = 1;
 ptn_info.scale_offset = 0;
+
+%% add neural network
+ptn_info.fNeuralLearnRate = 0.1;
+ptn_info.nNeuralLayer = 10;
+ptn_info.nNeuralMaxIteration = 100;
 
 if ~exist('strFileFullName')
     disp('Input the data file --- *.*');
@@ -46,6 +58,16 @@ while(~feof(fptr))
    else
        if strLine(1:lenConstFeatureScaleFactor) == strConstFeatureScaleFactor
            ptn_info.scale_feature_factor = sscanf(strLine((lenConstFeatureScaleFactor + 1): end), ' = %f');
+       elseif strLine(1:lenConstNeuralLayer) == strConstNeuralLayer
+           ptn_info.nNeuralLayer = sscanf(strLine((lenConstNeuralLayer + 1): end), ' = %d');
+        % ConstNeuralMaxIteration
+       elseif  strLine(1:lenConstNeuralMaxIteration) == strConstNeuralMaxIteration
+           ptn_info.nNeuralMaxIteration = sscanf(strLine((lenConstNeuralMaxIteration + 1): end), ' = %d');
+         
+       % ConstNeuralLearnRate
+       elseif  strLine(1:lenConstNeuralLearnRate) == strConstNeuralLearnRate
+           ptn_info.fNeuralLearnRate = sscanf(strLine((lenConstNeuralLearnRate + 1): end), ' = %f');
+           
        elseif strLine(1:lenConstClassScaleFactor) == strConstClassScaleFactor
            ptn_info.scale_factor = sscanf(strLine((lenConstClassScaleFactor + 1): end), ' = %f');
        elseif strLine(1:lenConstClassScaleOffset) == strConstClassScaleOffset

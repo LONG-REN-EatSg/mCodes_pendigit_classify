@@ -1,11 +1,13 @@
-function [ptn_info, astSampleCase] = ptn_load_data_and_cfg(flag_load_data)
+function [ptn_info, astSampleCase, stNeuralNetwork] = ptn_load_data_and_cfg(flag_load_data)
+%% 2024July9 Add neural network
 
+stNeuralNetwork = [];
 [ptn_info] = ptn_load_config;
 
 if flag_load_data ~= 0
     if flag_load_data == 1   
         %% pen-digits 10-classes {0, 1, 2, ..., 9}
-        [astSampleCase, num_total_cases] = load_data;
+        [astSampleCase, num_total_cases, stNeuralNetwork] = load_data; %% 2024July9 
          ptn_info.total_class = 10;
 
     elseif flag_load_data == 2 
